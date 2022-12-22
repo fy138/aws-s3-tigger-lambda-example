@@ -1,0 +1,27 @@
+s3事件通知到SQS需要加下面的权限，在SQS权限里加上
+参考
+https://aws.amazon.com/cn/premiumsupport/knowledge-center/sqs-s3-event-notification-sse/
+https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/ways-to-add-notification-config-to-bucket.html
+{
+  "Version": "2008-10-17",
+  "Id": "__default_policy_ID",
+  "Statement": [
+    {
+      "Sid": "__owner_statement",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Action": "SQS:SendMessage",
+      "Resource": "arn:aws:sqs:us-east-1:84726074:myqueuestandard",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "84726074"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:*:*:mys3tosqs"
+        }
+      }
+    }
+  ]
+}
